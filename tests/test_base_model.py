@@ -4,10 +4,10 @@ Module for BaseModel unittest
 """
 
 import sys
-sys.path.insert(0, '../')
 import os
 import unittest
 from models.base_model import BaseModel
+sys.path.insert(0, '../')
 
 
 class TestBasemodel(unittest.TestCase):
@@ -86,6 +86,7 @@ class TestBasemodel(unittest.TestCase):
         self.assertIn(my_model.id, str(my_model))
 
         self.assertIn(str(my_model.__dict__), str(my_model))
+
 
 if __name__ == "__main__":
     unittest.main()
