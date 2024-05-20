@@ -17,7 +17,7 @@ class BaseModel():
     def __str__(self):
         class_name = self.__class__.__name__
         return "[{}] ({}) {}".format(class_name, self.id, self.__dict__)
-    
+
     def save(self):
         self.updated_at = datetime.utcnow()
 
@@ -27,7 +27,7 @@ class BaseModel():
         obj_dict["created_at"] = self.created_at.isoformat()
         obj_dict["updated_at"] = self.updated_at.isoformat()
         return obj_dict
-    
 
 
-
+if __name__ == "__main__":
+    pass
