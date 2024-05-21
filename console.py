@@ -8,6 +8,12 @@ from shlex import split
 import ast
 from models import storage
 from models.base_model import BaseModel
+from models.user import User
+from models.amenity import Amenity
+from models.place import Place
+from models.state import State
+from models.review import Review
+from models.city import City
 
 
 class HBNBCommand(cmd.Cmd):
@@ -137,6 +143,48 @@ class HBNBCommand(cmd.Cmd):
                     pass
                 setattr(obj, attr_name, attr_value)
                 obj.save()
+
+    def default(self, arg):
+        arg_list = arg.split(".")
+        class_name = arg_list[0]
+        command = arg_list[1].split("(")[0]
+        method = command
+
+        xtra_args = command[1].split(")")[0]
+
+        method_dict = {
+            "all": self.do_all,
+            "show": self.do_show,
+            "update": self.do_update,
+            "destory": self.do_destroy,
+            "count": self.do_count,
+        }
+
+        if method in method_dict.keys():
+            return method_dict[method]("{} {}".format(class_name,
+                                                      xtra_args))
+        print("*** unknown syntax: {}".format(arg))
+        return False
+    
+    def do_count(self, arg):
+        """Count based on the class name"""
+        obj_list = storage.all()
+        arg_list = split(arg)
+
+        if arg:
+            class_name = arg_list[0]
+
+        count = 0
+        if arg_list:
+            if class_name in self.valid_cls:
+                for obj in obj_list.values():
+                    if obj.__class__.__name__ == class_name:
+                        count += 1
+                print(count)
+            else:
+                print("** invalid class name **")
+        else:
+            print("** class name missing **")
 
     def do_quit(self, arg):
         """Quit command to exit the program"""
