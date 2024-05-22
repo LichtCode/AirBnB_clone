@@ -129,19 +129,28 @@ class HBNBCommand(cmd.Cmd):
 
             if key not in obj_list:
                 print("** no instance found **")
-            elif len(arg_list) < 3:
-                print("** attribute name missing **")
-            elif len(arg_list) < 4:
-                print("** value missing **")
             else:
                 obj = obj_list[key]
-                attr_name = arg_list[2]
-                attr_value = arg_list[3]
-                try:
-                    attr_value = eval(attr_value)
-                except Exception:
-                    pass
-                setattr(obj, attr_name, attr_value)
+                if isinstance(arg_list[3], dict):
+                    for key, value in arg_list[3].items():
+                        try:
+                            value = eval(value)
+                        except Exception:
+                            pass
+                        setattr(obj, key, value)
+                else:
+                    if len(arg_list) < 3:
+                        print("** attribute name missing **")
+                    elif len(arg_list) < 4:
+                        print("** value missing **")
+                    else:
+                        attr_name = arg_list[2]
+                        attr_value = arg_list[3]
+                        try:
+                            attr_value = eval(attr_value)
+                        except Exception:
+                            pass
+                        setattr(obj, attr_name, attr_value)
                 obj.save()
 
     def default(self, arg):
@@ -161,8 +170,21 @@ class HBNBCommand(cmd.Cmd):
         }
 
         if method in method_dict.keys():
-            return method_dict[method]("{} {}".format(class_name,
+            if method != "update":
+                return method_dict[method]("{} {}".format(class_name,
                                                       xtra_args))
+            else:
+                print(xtra_args)
+                xtra_args = xtra_args.split(", ")
+                print(xtra_args)
+                obj_id = xtra_args[0]
+                arg1 = xtra_args[1]
+                arg2 = xtra_args[2]
+                return method_dict[method]("{} {} {} {}".format(class_name,
+                                                                obj_id,
+                                                                arg1,
+                                                                arg2))
+
         print("*** unknown syntax: {}".format(arg))
         return False
     
