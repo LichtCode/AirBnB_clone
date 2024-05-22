@@ -174,9 +174,7 @@ class HBNBCommand(cmd.Cmd):
                 return method_dict[method]("{} {}".format(class_name,
                                                       xtra_args))
             else:
-                print(xtra_args)
                 xtra_args = xtra_args.split(", ")
-                print(xtra_args)
                 obj_id = xtra_args[0]
                 arg1 = xtra_args[1]
                 arg2 = xtra_args[2]
