@@ -147,16 +147,16 @@ class HBNBCommand(cmd.Cmd):
     def default(self, arg):
         arg_list = arg.split(".")
         class_name = arg_list[0]
-        command = arg_list[1].split("(")[0]
-        method = command
+        arg_list = arg_list[1].split("(")
+        method = arg_list[0]
 
-        xtra_args = command[1].split(")")[0]
+        xtra_args = arg_list[1].split(")")[0]
 
         method_dict = {
             "all": self.do_all,
             "show": self.do_show,
             "update": self.do_update,
-            "destory": self.do_destroy,
+            "destroy": self.do_destroy,
             "count": self.do_count,
         }
 
